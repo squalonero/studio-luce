@@ -1,0 +1,9 @@
+.git
+.next
+node_modules
+out
+npm-debug.log*
+.DS_Store
+docs
+README.md
+compose.yaml
