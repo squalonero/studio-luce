@@ -1,6 +1,6 @@
 # Documentation
 
-Studio Luce is a static Next.js site for the Cloudflare Pages free plan.
+Studio Luce is a Next.js app deployed as a Cloudflare Worker.
 
 - [Local development](local-development.md) covers Docker.
-- [Cloudflare Pages](cloudflare-pages.md) covers what the free plan can host and how to deploy.
+- [Cloudflare Workers](cloudflare-workers.md) covers the GitHub build that runs on each push.

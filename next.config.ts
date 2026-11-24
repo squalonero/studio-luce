@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
 /**
- * Cloudflare Pages serves static files only.
- * `output: "export"` makes `next build` write that site to `out/`.
- * Request-time rendering, Server Actions, middleware, and the default
- * image optimizer need a server, so they are not part of this setup.
+ * The app runs as a Cloudflare Worker through vinext.
+ * `output: "export"` is intentionally absent: that mode writes static files
+ * and does not produce the Worker bundle.
+ * The default image optimizer needs a server this project does not configure,
+ * so images stay unoptimized.
  */
 const nextConfig: NextConfig = {
-  output: "export",
   images: {
     unoptimized: true,
   },

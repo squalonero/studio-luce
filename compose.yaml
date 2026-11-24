@@ -14,28 +14,5 @@ services:
     environment:
       NEXT_TELEMETRY_DISABLED: "1"
 
-  # Publishes the static export. Requires CLOUDFLARE_ACCOUNT_ID and
-  # CLOUDFLARE_API_TOKEN in the shell or in the gitignored .env file.
-  # Start it with: docker compose --profile deploy run --rm --build deploy
-  deploy:
-    profiles: ["deploy"]
-    build:
-      context: .
-      target: deploy
-    environment:
-      CI: "true"
-      CLOUDFLARE_ACCOUNT_ID:
-      CLOUDFLARE_API_TOKEN:
-
-  # Static preview of `out/`, which is what Cloudflare Pages serves.
-  # Start it with: docker compose --profile preview up --build preview
-  preview:
-    profiles: ["preview"]
-    build:
-      context: .
-      target: preview
-    ports:
-      - "8080:80"
-
 volumes:
   web_node_modules:
