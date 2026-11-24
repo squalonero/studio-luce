@@ -3,7 +3,8 @@
 # and then `npx wrangler deploy`. See docs/cloudflare-workers.md.
 
 # Node 22.23.4 matches .node-version and satisfies Wrangler (>= 22.12).
-FROM node:22.23.4-alpine AS base
+# Debian, not Alpine: the local Worker runtime ships a glibc binary.
+FROM node:22.23.4-bookworm-slim AS base
 WORKDIR /app
 # Keeps Next.js and Vite from sending anonymous usage data during image builds.
 ENV NEXT_TELEMETRY_DISABLED=1

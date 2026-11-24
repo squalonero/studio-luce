@@ -3,14 +3,14 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hello, world",
-  description: "Studio Luce",
+  title: "Studio Luce",
+  description: "Studio Luce: L’Anima del Vetro",
 };
 
-/** Root document. The static export renders this shell into every page. */
+/** Root document shared by every route. */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="it">
       <body>{children}</body>
     </html>
   );

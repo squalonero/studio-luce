@@ -24,7 +24,7 @@ Workers Builds installs dependencies with `npm ci` before the build command. `.n
 
 `wrangler.jsonc` sends every request through the Worker except the hashed files under `/_next/static`. Those files are served from Workers Static Assets. The page itself is rendered by the Worker.
 
-There is no shared cache and no image optimizer. The hello-world page does not need them. `next.config.ts` sets `images.unoptimized` so `next/image` is not pointed at an optimizer this project does not configure.
+There is no shared cache and no image optimizer. The homepage does not need them. `next.config.ts` sets `images.unoptimized` so `next/image` is not pointed at an optimizer this project does not configure.
 
 ## Free plan
 

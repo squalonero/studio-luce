@@ -1,15 +1,9 @@
 :root {
-  color-scheme: light dark;
-  font-family: system-ui, sans-serif;
-  background: #f7f4ef;
-  color: #1c1917;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    background: #1c1917;
-    color: #f7f4ef;
-  }
+  color-scheme: dark;
+  /* The logo is gold on black. The page uses the same ground so the file's background disappears. */
+  background: #000000;
+  color: #e6c35c;
+  font-family: Didot, "Bodoni MT", Palatino, "Palatino Linotype", "Times New Roman", serif;
 }
 
 body {
@@ -17,15 +11,42 @@ body {
   min-height: 100vh;
 }
 
-main {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.25rem 1.75rem 0.5rem;
 }
 
-h1 {
+.site-logo {
+  display: block;
+  height: 2.375rem;
+  width: auto;
+}
+
+.hero {
+  min-height: calc(100vh - 6.5rem);
+  display: grid;
+  place-items: center;
+  padding: 2.5rem 1.5rem 4rem;
+  text-align: center;
+}
+
+.hero h1 {
   margin: 0;
-  font-size: 2.5rem;
+  max-width: 14ch;
+  font-size: clamp(2.75rem, 7vw, 5.5rem);
   font-weight: 500;
-  letter-spacing: -0.03em;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    padding-inline: 1rem;
+  }
+
+  .site-logo {
+    height: 1.625rem;
+  }
 }

@@ -12,7 +12,7 @@ From the repository root:
 docker compose up --build
 ```
 
-Open http://localhost:3000. The home page is `Hello, world`.
+Open http://localhost:3000. The header shows the logo on the left, and the hero reads `Studio Luce: L’Anima del Vetro`.
 
 The container runs `vite dev` through vinext, on port 3000, bound to every interface. Source edits on the host are visible in the container. Installed packages stay in the `web_node_modules` volume.
 
