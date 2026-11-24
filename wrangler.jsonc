@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Pages project name. The production hostname is studio-luce.pages.dev
+  // when that name is free on the account.
+  "name": "studio-luce",
+  // Static export written by `next build`. Required for `wrangler pages deploy`.
+  "pages_build_output_dir": "./out",
+  // Workers runtime date. This site has no Pages Functions; the date is
+  // still required by the Pages Wrangler configuration.
+  "compatibility_date": "2026-11-23",
+  // Do not send Wrangler usage metrics.
+  "send_metrics": false
+}

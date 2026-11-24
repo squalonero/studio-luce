@@ -22,9 +22,40 @@ Figures below are from the [Pages limits](https://developers.cloudflare.com/page
 
 That page does not list a request cap for static assets. Requests to Pages Functions count against the Workers quota. This site has no Pages Functions.
 
-The current Pages build image defaults to Node.js 22, which satisfies Next.js 16 (`node >= 20.9.0`). `.node-version` pins major version 22 so the build does not follow a later default. Pages reads `.node-version` and `.nvmrc`. See [Build image](https://developers.cloudflare.com/pages/configuration/build-image/).
+`.node-version` pins Node.js `22.23.4`. Pages reads that file. Wrangler 4.167 requires Node `>= 22.12.0`, and Next.js 16 requires Node `>= 20.9.0`. See [Build image](https://developers.cloudflare.com/pages/configuration/build-image/).
 
-## Deploy
+## Environment variables
+
+The site build does not read custom variables. `next build` succeeds without a `.env` file.
+
+Direct upload with Wrangler requires two values. The deploy command throws if either one is missing or empty. They are not committed.
+
+| Variable | Where it is used |
+| --- | --- |
+| `CLOUDFLARE_ACCOUNT_ID` | Wrangler, to choose the Cloudflare account |
+| `CLOUDFLARE_API_TOKEN` | Wrangler, to authenticate the upload |
+
+Create the token in the Cloudflare dashboard under My Profile, API Tokens. The permission is Account, Cloudflare Pages, Edit. Copy the account ID from the same dashboard (Workers & Pages, the account overview). Put both values in a gitignored `.env` file at the repository root. `.env.example` lists the names.
+
+```bash
+cp .env.example .env
+```
+
+Pages injects `CI`, `CF_PAGES`, `CF_PAGES_COMMIT_SHA`, `CF_PAGES_BRANCH`, and `CF_PAGES_URL` during a Git build. This site does not read them. See [Build configuration](https://developers.cloudflare.com/pages/configuration/build-configuration/).
+
+## Deploy from this machine
+
+Docker Desktop must be running. From the repository root, with `.env` filled in:
+
+```bash
+docker compose --profile deploy run --rm --build deploy
+```
+
+That builds `out/` inside the image and runs `wrangler pages deploy`. The project name and output directory are in `wrangler.jsonc` (`studio-luce`, `./out`). The production URL is `https://studio-luce.pages.dev` when that project name is free on the account.
+
+The API token is passed into the container at runtime. It is not written into the image.
+
+## Deploy from Git
 
 1. Push this repository to GitHub or GitLab.
 2. In the Cloudflare dashboard, open Workers & Pages, then Create application.
