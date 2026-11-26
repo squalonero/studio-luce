@@ -29,8 +29,8 @@ content/collezione/lampada-giove/
 
 Put exactly one image next to `item.json`. That file is the card image. The name can be anything. The examples use `copertina.jpg`. Accepted types are jpg, jpeg, png, and webp.
 
-Put the detail photographs in `gallery/`. Filenames decide their order (`01.jpg` before `02.jpg`). The card image is not part of the gallery unless the same file is also copied there. A piece needs at least one image in `gallery/`.
+Put the detail photographs in `gallery/`. Every image file in that folder is used, whatever its name is. Accepted types are jpg, jpeg, png, webp, gif, and avif, in any letter case. Other files in the folder are ignored. The photographs are shown in filename order so the sequence stays stable. The card image is not part of the gallery unless the same file is also copied there. A piece needs at least one image in `gallery/`.
 
 Zero card images, more than one card image, a missing gallery image, an image without `item.json`, a repeated `order`, or a missing field stops the build with an error. The Worker does not read these files at request time: Vite includes them in the bundle.
 
-The example pieces are `lampada-giove` and `applique-a-ventaglio`. Each has `copertina.jpg` for the card. `gallery/01.jpg` is the wider view and `gallery/02.jpg` is a closer view.
+The example pieces are `lampada-giove` and `applique-a-ventaglio`. Each has `copertina.jpg` for the card. The files inside `gallery/` can use any image filename.

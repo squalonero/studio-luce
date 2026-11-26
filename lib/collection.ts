@@ -5,7 +5,8 @@
  *
  * Each piece is a folder under content/collezione/<slug>/.
  * The folder holds item.json (title, description, order) and exactly one
- * image, which is the card. Photographs for the detail page live in gallery/.
+ * image, which is the card. Every image file inside gallery/ is a detail
+ * photograph, whatever its filename is.
  * The card text is the description, clamped to three lines. There is no summary.
  * Vite bundles the files at build time, so the Worker does not read the disk.
  */
@@ -22,7 +23,7 @@ export type CollectionItem = {
   order: number;
   /** The single image that sits next to item.json. */
   card: CollectionImage;
-  /** Photographs from gallery/, in filename order. */
+  /** Every image file from gallery/, in filename order. */
   images: CollectionImage[];
 };
 
@@ -44,10 +45,14 @@ const cardModules = import.meta.glob(
   { eager: true, import: "default", query: "?url" },
 );
 
-const galleryModules = import.meta.glob(
-  "/content/collezione/*/gallery/*.{jpg,jpeg,png,webp}",
-  { eager: true, import: "default", query: "?url" },
-);
+const galleryModules = import.meta.glob("/content/collezione/*/gallery/**/*", {
+  eager: true,
+  import: "default",
+  query: "?url",
+});
+
+/** Image files only. The basename is not part of the rule. */
+const GALLERY_IMAGE = /\.(avif|gif|jpe?g|png|webp)$/i;
 
 function requireString(value: unknown, path: string, field: string): string {
   if (typeof value !== "string" || value.trim() === "") {
@@ -102,9 +107,15 @@ function readImage(path: string, src: unknown): CollectionImage {
   return { src, file };
 }
 
-function groupImages(modules: Record<string, unknown>): Map<string, CollectionImage[]> {
+function groupImages(
+  modules: Record<string, unknown>,
+  imagesOnly: boolean,
+): Map<string, CollectionImage[]> {
   const grouped = new Map<string, CollectionImage[]>();
   for (const [path, src] of Object.entries(modules)) {
+    if (imagesOnly && !GALLERY_IMAGE.test(path)) {
+      continue;
+    }
     const slug = slugFromPath(path);
     const images = grouped.get(slug) ?? [];
     images.push(readImage(path, src));
@@ -114,8 +125,8 @@ function groupImages(modules: Record<string, unknown>): Map<string, CollectionIm
 }
 
 function loadCollection(): CollectionItem[] {
-  const cardsBySlug = groupImages(cardModules);
-  const galleriesBySlug = groupImages(galleryModules);
+  const cardsBySlug = groupImages(cardModules, false);
+  const galleriesBySlug = groupImages(galleryModules, true);
   const items: CollectionItem[] = [];
   const orders = new Set<number>();
 
@@ -136,7 +147,7 @@ function loadCollection(): CollectionItem[] {
     }
     cardsBySlug.delete(slug);
     galleriesBySlug.delete(slug);
-    images.sort((a, b) => a.file.localeCompare(b.file, "en"));
+    images.sort((a, b) => a.file.localeCompare(b.file, "en", { numeric: true, sensitivity: "base" }));
     items.push({ slug, ...file, card: cards[0], images });
   }
 
