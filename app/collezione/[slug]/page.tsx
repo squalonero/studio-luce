@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/** Detail page for one piece: title, full text, and the folder's gallery. */
+/** Detail page: cover beside the text, then the gallery. The cover is not a gallery slide. */
 export default async function CollectionItemPage({ params }: Props) {
   const { slug } = await params;
   const item = getCollectionItem(slug);
@@ -37,12 +37,20 @@ export default async function CollectionItemPage({ params }: Props) {
       <Link className="piece-back" href="/#collezione">
         Torna alla collezione
       </Link>
-      <h1>{item.title}</h1>
-      <div className="piece-text">
-        {item.description.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </div>
+      <section className="piece-lead" aria-labelledby="piece-title">
+        <div className="piece-copy">
+          <h1 id="piece-title">{item.title}</h1>
+          <div className="piece-text">
+            {item.description.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+        {/* Same idea as the homepage craft photo: the frame matches the copy height. */}
+        <figure className="piece-figure">
+          <img src={item.card.src} alt={item.title} />
+        </figure>
+      </section>
       <PieceGallery
         title={item.title}
         images={item.images.map((image, index) => ({
