@@ -4,10 +4,11 @@
  * Collection catalog.
  *
  * Each piece is a folder under content/collezione/<slug>/.
- * The folder holds item.json (title, description, order) and exactly one
+ * The folder holds item.json (title, description) and exactly one
  * image, which is the card. Every image file inside gallery/ is a detail
  * photograph, whatever its filename is.
  * The card text is the description, clamped to three lines. There is no summary.
+ * Pieces follow the folder names, so renaming a folder moves its card.
  * Vite bundles the files at build time, so the Worker does not read the disk.
  */
 
@@ -20,7 +21,6 @@ export type CollectionItem = {
   slug: string;
   title: string;
   description: string[];
-  order: number;
   /** The single image that sits next to item.json. */
   card: CollectionImage;
   /** Every image file from gallery/, in filename order. */
@@ -30,7 +30,6 @@ export type CollectionItem = {
 type ItemFile = {
   title: string;
   description: string[];
-  order: number;
 };
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -69,6 +68,9 @@ function readItemFile(path: string, value: unknown): ItemFile {
   if ("summary" in record) {
     throw new Error(`${path} must not include "summary". The card uses the description.`);
   }
+  if ("order" in record) {
+    throw new Error(`${path} must not include "order". Rename the folder to change its place.`);
+  }
   const description = record.description;
   if (!Array.isArray(description) || description.length === 0) {
     throw new Error(`${path} "description" must be a list of paragraphs`);
@@ -76,13 +78,9 @@ function readItemFile(path: string, value: unknown): ItemFile {
   if (!description.every((paragraph) => typeof paragraph === "string" && paragraph.trim() !== "")) {
     throw new Error(`${path} "description" has an empty paragraph`);
   }
-  if (typeof record.order !== "number" || !Number.isInteger(record.order)) {
-    throw new Error(`${path} "order" must be an integer`);
-  }
   return {
     title: requireString(record.title, path, "title"),
     description: description.map((paragraph) => paragraph.trim()),
-    order: record.order,
   };
 }
 
@@ -128,15 +126,10 @@ function loadCollection(): CollectionItem[] {
   const cardsBySlug = groupImages(cardModules, false);
   const galleriesBySlug = groupImages(galleryModules, true);
   const items: CollectionItem[] = [];
-  const orders = new Set<number>();
 
   for (const [path, value] of Object.entries(itemModules)) {
     const slug = slugFromPath(path);
     const file = readItemFile(path, value);
-    if (orders.has(file.order)) {
-      throw new Error(`Two collection pieces use order ${file.order}`);
-    }
-    orders.add(file.order);
     const cards = cardsBySlug.get(slug) ?? [];
     if (cards.length !== 1) {
       throw new Error(`${path} needs exactly one image next to item.json, found ${cards.length}`);
@@ -159,7 +152,7 @@ function loadCollection(): CollectionItem[] {
     throw new Error("content/collezione has no pieces. Add <slug>/item.json, one card image, and gallery/.");
   }
 
-  items.sort((a, b) => a.order - b.order);
+  items.sort((a, b) => a.slug.localeCompare(b.slug, "en", { numeric: true, sensitivity: "base" }));
   return items;
 }
 
