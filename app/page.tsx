@@ -56,9 +56,9 @@ export default function HomePage() {
           {pieces.map((piece) => (
             <li key={piece.slug}>
               <Link className="collection-card" href={`/collezione/${piece.slug}`}>
-                <img src={piece.images[0].src} alt="" />
+                <img src={piece.card.src} alt="" />
                 <h3>{piece.title}</h3>
-                <p>{piece.summary}</p>
+                <p>{piece.description.join(" ")}</p>
               </Link>
             </li>
           ))}

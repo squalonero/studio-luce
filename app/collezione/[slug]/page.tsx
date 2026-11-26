@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCollectionItem, listCollection } from "../../../lib/collection";
+import { PieceGallery } from "../piece-gallery";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   return {
     title: `${item.title} | Studio Luce`,
-    description: item.summary,
+    description: item.description.join(" "),
   };
 }
 
@@ -42,20 +43,16 @@ export default async function CollectionItemPage({ params }: Props) {
           <p key={paragraph}>{paragraph}</p>
         ))}
       </div>
-      <ul className="piece-gallery">
-        {item.images.map((image, index) => (
-          <li key={image.file}>
-            <img
-              src={image.src}
-              alt={
-                item.images.length === 1
-                  ? item.title
-                  : `${item.title}, fotografia ${index + 1}`
-              }
-            />
-          </li>
-        ))}
-      </ul>
+      <PieceGallery
+        title={item.title}
+        images={item.images.map((image, index) => ({
+          src: image.src,
+          alt:
+            item.images.length === 1
+              ? item.title
+              : `${item.title}, fotografia ${index + 1}`,
+        }))}
+      />
     </main>
   );
 }

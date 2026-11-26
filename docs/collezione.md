@@ -1,31 +1,36 @@
 # Collezione
 
-The homepage section sits under `Artigianato Senza Tempo`. Its title is `Collezione` and the subtitle is centered under it. Each card shows the first gallery image, the title, and the short summary. The whole card links to `/collezione/<slug>`.
+The homepage section sits under `Artigianato Senza Tempo`. Its title is `Collezione` and the subtitle is centered under it. Each card shows the single image that sits next to `item.json`, the title, and the description clamped to three lines. The whole card links to `/collezione/<slug>`.
 
 The detail page shows the title, every paragraph of the description, and the gallery. `Torna alla collezione` links back to `/#collezione`.
 
+The gallery frames the first photograph and lists the others as thumbnails under the heading `Fotografie`. Each photograph is a button. Activating one opens a dialog over the page: the large image, `Chiudi`, a count such as `1 di 2`, previous and next controls, and a thumbnail menu labeled `Menu delle fotografie`. The current thumbnail is marked. Arrow keys move through the photographs. Escape, `Chiudi`, and the dark backdrop close the dialog and return focus to the button that opened it. A piece with one photograph still opens the dialog, without the previous, next, and menu controls.
+
 ## Where to edit a piece
 
-Add a folder under `content/collezione/`. The folder name is the URL slug: lowercase letters, digits, and single hyphens, for example `sfera-sospesa`.
+Add a folder under `content/collezione/`. The folder name is the URL slug: lowercase letters, digits, and single hyphens, for example `lampada-giove`.
 
 ```
-content/collezione/sfera-sospesa/
+content/collezione/lampada-giove/
   item.json
-  01.jpg
-  02.jpg
+  copertina.jpg
+  gallery/
+    01.jpg
+    02.jpg
 ```
 
-`item.json` has four fields:
+`item.json` has three fields. There is no summary.
 
 | Field | Role |
 | --- | --- |
 | `title` | Card title and detail heading |
-| `summary` | Short text on the card |
-| `description` | List of paragraphs on the detail page |
+| `description` | List of paragraphs. The detail page shows every paragraph. The card shows the same text, joined, and clamps it to three lines. |
 | `order` | Integer. Lower numbers appear first. Each piece needs its own number. |
 
-Place the photographs next to `item.json`. Accepted types are jpg, jpeg, png, and webp. Filenames decide the order (`01.jpg` before `02.jpg`). The first file is the card image. Every file is part of the gallery.
+Put exactly one image next to `item.json`. That file is the card image. The name can be anything. The examples use `copertina.jpg`. Accepted types are jpg, jpeg, png, and webp.
 
-A folder needs `item.json` and at least one image. An image without `item.json`, a repeated `order`, or a missing field stops the build with an error. The Worker does not read these files at request time: Vite includes them in the bundle.
+Put the detail photographs in `gallery/`. Filenames decide their order (`01.jpg` before `02.jpg`). The card image is not part of the gallery unless the same file is also copied there. A piece needs at least one image in `gallery/`.
 
-The two example pieces are `sfera-sospesa` and `applique-a-ventaglio`. Each folder has `01.jpg` (the wider view, also used on the card) and `02.jpg` (a closer view in the gallery).
+Zero card images, more than one card image, a missing gallery image, an image without `item.json`, a repeated `order`, or a missing field stops the build with an error. The Worker does not read these files at request time: Vite includes them in the bundle.
+
+The example pieces are `lampada-giove` and `applique-a-ventaglio`. Each has `copertina.jpg` for the card. `gallery/01.jpg` is the wider view and `gallery/02.jpg` is a closer view.

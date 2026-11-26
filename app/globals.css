@@ -93,8 +93,7 @@ body {
   line-height: 1.7;
 }
 
-.collection-grid,
-.piece-gallery {
+.collection-grid {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -142,6 +141,12 @@ body {
 }
 
 .collection-card p {
+  /* The full description is in the card. Three lines are shown; the rest stays on the detail page. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
   margin: 0 1.15rem 1.3rem;
   color: #f4efe4;
   font-size: 1rem;
@@ -176,18 +181,180 @@ body {
 }
 
 .piece-gallery {
-  display: grid;
-  gap: 1rem;
-  margin-top: 2.5rem;
+  margin-top: 2.75rem;
 }
 
-.piece-gallery img {
+.piece-gallery-title {
+  margin: 0 0 0.9rem;
+  color: #e6c35c;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.piece-stage,
+.piece-thumbs button,
+.viewer-nav,
+.viewer-close,
+.viewer-menu button {
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.piece-stage {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid rgba(230, 195, 92, 0.45);
+  background: #0a0a0a;
+}
+
+.piece-stage img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+.piece-thumbs,
+.viewer-menu {
+  display: flex;
+  gap: 0.65rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+}
+
+.piece-thumbs button,
+.viewer-menu button {
+  display: block;
+  padding: 0;
+  border: 1px solid rgba(230, 195, 92, 0.35);
+  background: #000;
+}
+
+.piece-thumbs img,
+.viewer-menu img {
+  display: block;
+  width: 5.5rem;
+  height: 4.1rem;
+  object-fit: cover;
+}
+
+.piece-stage:hover,
+.piece-thumbs button:hover,
+.viewer-menu button:hover,
+.piece-stage:focus-visible,
+.piece-thumbs button:focus-visible,
+.viewer-menu button[aria-current="true"] {
+  border-color: #e6c35c;
+}
+
+.piece-stage:focus-visible,
+.piece-thumbs button:focus-visible,
+.viewer-close:focus-visible,
+.viewer-nav:focus-visible,
+.viewer-menu button:focus-visible {
+  outline: 2px solid #e6c35c;
+  outline-offset: 3px;
+}
+
+/* The viewer covers the page. The backdrop sits behind the controls and is skipped by Tab. */
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  padding: 1.15rem 1.25rem 1.4rem;
+}
+
+.viewer-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.92);
+  cursor: pointer;
+}
+
+.viewer-bar,
+.viewer-layout,
+.viewer-menu {
+  position: relative;
+  z-index: 1;
+}
+
+.viewer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 76rem);
+  margin-bottom: 0.85rem;
+}
+
+.viewer-count {
+  margin: 0;
+  color: #f4efe4;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.viewer-close {
+  padding: 0.35rem 0.15rem;
+  border: 0;
+  background: transparent;
+  color: #e6c35c;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.viewer-layout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.85rem;
+  width: min(100%, 76rem);
+  min-height: 0;
+}
+
+.viewer-layout img {
   display: block;
   width: auto;
   max-width: 100%;
-  max-height: 42rem;
+  max-height: calc(100vh - 13rem);
   margin-inline: auto;
+  animation: viewer-in 180ms ease;
 }
+
+@keyframes viewer-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.viewer-nav {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(230, 195, 92, 0.7);
+  background: rgba(0, 0, 0, 0.45);
+  color: #e6c35c;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.viewer-menu {
+  justify-content: center;
+  width: min(100%, 76rem);
+  margin-top: 1rem;
+}
+
 
 .craft {
   display: grid;
@@ -271,5 +438,13 @@ body {
   .craft-figure {
     aspect-ratio: 4 / 5;
     min-height: 0;
+  }
+
+  .piece-stage img {
+    aspect-ratio: 3 / 4;
+  }
+
+  .viewer-layout img {
+    max-height: calc(100vh - 16rem);
   }
 }
