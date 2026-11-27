@@ -6,7 +6,7 @@ The movement depends on the block:
 
 | Block | Motion |
 | --- | --- |
-| Hero title | Fade only, so the line stays centered over the photograph |
+| Hero title and the Collezione link | Fade only, so the line stays centered over the photograph. The link follows the title |
 | Craft copy and detail copy | Fade in from the left |
 | Murano box | Fade upward, a short moment after the copy |
 | Craft photograph and detail cover | Fade in from the right |

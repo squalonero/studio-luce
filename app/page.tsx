@@ -9,9 +9,16 @@ export default function HomePage() {
   return (
     <main>
       <section className="hero" aria-labelledby="hero-title">
-        <Reveal as="h1" id="hero-title" variant="fade">
-          Studio Luce: L’Anima del Vetro
-        </Reveal>
+        <div className="hero-copy">
+          <Reveal as="h1" id="hero-title" variant="fade">
+            Studio Luce: L’Anima del Vetro
+          </Reveal>
+          <Reveal variant="fade" delay={200}>
+            <a className="hero-cta" href="#collezione">
+              Collezione
+            </a>
+          </Reveal>
+        </div>
       </section>
       <section className="craft" aria-labelledby="craft-title">
         <div className="craft-copy">
