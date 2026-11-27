@@ -10,4 +10,6 @@ Below the hero, `Artigianato Senza Tempo` is a two-column block. The copy sits o
 
 Under that block, the collection section shows a centered title and subtitle, then the cards loaded from `content/collezione/`. See [Collezione](collezione.md).
 
+The section content fades in as it enters the viewport. See [Motion](motion.md).
+
 The document language is Italian. The browser title is Studio Luce.

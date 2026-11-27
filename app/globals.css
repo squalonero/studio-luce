@@ -430,6 +430,43 @@ body {
   overflow: hidden;
 }
 
+/* Hidden until Reveal marks the block as entered. Opacity does not change the layout. */
+.reveal {
+  --reveal-delay: 0ms;
+  opacity: 0;
+  transform: translateY(1.35rem);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay);
+}
+
+.reveal-fade {
+  transform: none;
+  transition-duration: 1.15s;
+}
+
+.reveal-side {
+  transform: translateX(-1.5rem);
+}
+
+.reveal-photo {
+  transform: translateX(1.75rem);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Out of flow, so the row height comes from the text and the photo only fills it. */
 .craft-figure img {
   position: absolute;

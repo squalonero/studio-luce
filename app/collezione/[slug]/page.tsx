@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCollectionItem, listCollection } from "../../../lib/collection";
 import { PieceGallery } from "../piece-gallery";
+import { Reveal } from "../../reveal";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -34,33 +35,37 @@ export default async function CollectionItemPage({ params }: Props) {
 
   return (
     <main className="piece">
-      <Link className="piece-back" href="/#collezione">
-        Torna alla collezione
-      </Link>
+      <Reveal variant="fade">
+        <Link className="piece-back" href="/#collezione">
+          Torna alla collezione
+        </Link>
+      </Reveal>
       <section className="piece-lead" aria-labelledby="piece-title">
-        <div className="piece-copy">
+        <Reveal className="piece-copy" variant="side">
           <h1 id="piece-title">{item.title}</h1>
           <div className="piece-text">
             {item.description.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
-        </div>
+        </Reveal>
         {/* Same idea as the homepage craft photo: the frame matches the copy height. */}
-        <figure className="piece-figure">
+        <Reveal as="figure" className="piece-figure" variant="photo" delay={140}>
           <img src={item.card.src} alt={item.title} />
-        </figure>
+        </Reveal>
       </section>
-      <PieceGallery
-        title={item.title}
-        images={item.images.map((image, index) => ({
-          src: image.src,
-          alt:
-            item.images.length === 1
-              ? item.title
-              : `${item.title}, fotografia ${index + 1}`,
-        }))}
-      />
+      <Reveal delay={80}>
+        <PieceGallery
+          title={item.title}
+          images={item.images.map((image, index) => ({
+            src: image.src,
+            alt:
+              item.images.length === 1
+                ? item.title
+                : `${item.title}, fotografia ${index + 1}`,
+          }))}
+        />
+      </Reveal>
     </main>
   );
 }

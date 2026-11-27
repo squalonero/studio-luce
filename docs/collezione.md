@@ -2,6 +2,8 @@
 
 The homepage section sits under `Artigianato Senza Tempo`. Its title is `Collezione` and the subtitle is centered under it. Each card shows the single image that sits next to `item.json`, the title, and the description clamped to three lines. The whole card links to `/collezione/<slug>`.
 
+On the detail page the back link, the text, the cover, and the gallery fade in as they enter the viewport. See [Motion](motion.md).
+
 The detail page places the card image beside the description, in the same two-column arrangement as `Artigianato Senza Tempo`: copy on the left, photograph on the right, cropped so it matches the height of the text. On a narrow screen the text stays above the photograph. That image is not a gallery slide. Under the pair, the gallery lists only the files from `gallery/`. `Torna alla collezione` links back to `/#collezione`.
 
 The gallery frames the first photograph and lists the others as thumbnails under the heading `Fotografie`. Each photograph is a button. Activating one opens a dialog over the page: the large image, `Chiudi`, a count such as `1 di 2`, previous and next controls, and a thumbnail menu labeled `Menu delle fotografie`. The current thumbnail is marked. Arrow keys move through the photographs. Escape, `Chiudi`, and the dark backdrop close the dialog and return focus to the button that opened it. A piece with one photograph still opens the dialog, without the previous, next, and menu controls.
